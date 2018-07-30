@@ -9,9 +9,10 @@ Created on Mon Jul 30 11:26:44 2018
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import jsonify
 
 import pandas as pd
-
+import json
 
 high = 180
 medium = 120
@@ -28,7 +29,7 @@ def start():
     return render_template('index.html', alarms=alarms)
 
 @app.route("/postData/", methods=['post'])
-def getData():
+def postData():
     global alarms
     data = request.get_json()
     value = data['value']
@@ -42,3 +43,14 @@ def getData():
         print("nothing!")
     
     return "Value is = {}".format(value) 
+
+
+@app.route("/updateData/", methods=['get'])
+def getData():
+     
+    jsonObj = alarms.to_json(orient="records")
+    #jsonObj = alarms.to_json()
+    
+    #return alarms
+    #return json.dumps(jsonObj)
+    return jsonify(jsonObj)
