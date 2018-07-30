@@ -8,37 +8,35 @@ Created on Mon Jul 30 14:50:39 2018
 
 
 from flask import Flask
-from flask import render_template
-from flask import request
 
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 import requests
-import pandas as pd
-import json
 import random
-import sys, os
-
-
+import os
 
 app = Flask(__name__)
 
-@app.route("/")
-#@app.cli.command()
-#@click.option('--name')
-def start():
+sched = BlockingScheduler() # Scheduler object
 
-    
-    print('You wanted {!r} directory'.format(app.config.get('name')))
-    
-    
+
+def post_alarm():
     data = {"doctorName": os.environ['NAME'], 'value': random.randint(0, 200)}
 
     url = "http://127.0.0.1:5000/postData/"
     r = requests.post(url, json=data)
     print(r.text)
-    
+
+
+sched.add_job(post_alarm, 'interval',seconds=1)
+sched.start()
+
+@app.route("/")
+def start():
+    post_alarm()
     return "Hello world!"
 
+
 if __name__ == '__main__':
+
     app.run()
-    
