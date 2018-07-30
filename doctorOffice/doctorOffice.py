@@ -9,15 +9,29 @@ Created on Mon Jul 30 14:50:39 2018
 
 from flask import Flask
 
-from apscheduler.schedulers.blocking import BlockingScheduler
+from flask_apscheduler import APScheduler
+
 
 import requests
 import random
 import os
 
-app = Flask(__name__)
+class Config(object):
+    JOBS = [
+        {
+            'id': 'post_alarm',
+            'func': 'doctorOffice:post_alarm',
+            'trigger': 'interval',
+            'seconds': 1
+        }
+    ]
 
-sched = BlockingScheduler() # Scheduler object
+    SCHEDULER_API_ENABLED = True
+app = Flask(__name__)
+app.config.from_object(Config())
+
+
+
 
 
 def post_alarm():
@@ -27,9 +41,12 @@ def post_alarm():
     r = requests.post(url, json=data)
     print(r.text)
 
+scheduler = APScheduler()
+# it is also possible to enable the API directly
+scheduler.api_enabled = True
+scheduler.init_app(app)
+scheduler.start()
 
-sched.add_job(post_alarm, 'interval',seconds=1)
-sched.start()
 
 @app.route("/")
 def start():
@@ -38,5 +55,4 @@ def start():
 
 
 if __name__ == '__main__':
-
     app.run()
