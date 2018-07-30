@@ -1,0 +1,46 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+ <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script> 
+
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+
+ <table style="width:100%">
+  <tr>
+    <th>Time</th>
+    <th>Doctor's office</th>
+    <th>Level</th>
+  </tr>
+    
+  {% for alarm in alarms.iterrows() %}  
+    <tr>
+        <td>{{alarm[1].time}}</td>
+        <td>{{alarm[1].doctor_office}}</td>
+        <td>{{alarm[1].level}}</td>
+    </tr>
+  {% endfor %}
+ 
+</table> 
+
+
+
+</body>
+</html> 
