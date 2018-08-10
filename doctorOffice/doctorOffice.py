@@ -22,7 +22,7 @@ class Config(object):
             'id': 'post_alarm',
             'func': 'doctorOffice:post_alarm',
             'trigger': 'interval',
-            'seconds': 1
+            'seconds': int(os.environ['SECONDS']),
         }
     ]
 
@@ -37,7 +37,7 @@ app.config.from_object(Config())
 def post_alarm():
     data = {"doctorName": os.environ['NAME'], 'value': random.randint(0, 200)}
 
-    url = "http://127.0.0.1:5000/postData/"
+    url = os.environ['POSTURL']
     r = requests.post(url, json=data)
     print(r.text)
 

@@ -28,7 +28,7 @@ def start():
     
     return render_template('index.html', alarms=alarms)
 
-@app.route("/postData/", methods=['post'])
+@app.route("/postData", methods=['post'])
 def postData():
     global alarms
     data = request.get_json()
